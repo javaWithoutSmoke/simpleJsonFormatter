@@ -15,7 +15,7 @@
         }
 
         #json-input {
-            width: 100%;
+            width: 98%;
             height: 200px;
             border: 1px solid #ccc;
             padding: 10px;
@@ -32,6 +32,7 @@
             background-color: #f4f4f4;
             margin-bottom: 20px;
             position: relative;
+			width: 98%;
         }
 
         .formatted-json pre {
@@ -39,6 +40,7 @@
             font-size: 14px;
             line-height: 1.6;
             overflow-x: auto;
+
         }
 
         /* 格式化冒号与左右的文本距离相同 */
@@ -52,39 +54,63 @@
             margin-bottom: 20px;
         }
 
+        /* 格式化按钮的样式 */
+        .format-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            margin-bottom: 10px;
+        }
+
         /* 复制按钮的样式 */
         .copy-button {
-            position: absolute;
-            top: 10px;
-            right: 10px;
             background-color: #007bff;
             color: #fff;
             border: none;
             padding: 5px 10px;
             cursor: pointer;
         }
+
+        /* 消息提示框的样式 */
+        .message {
+            display: none;
+            background-color: #4CAF50;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 1;
+        }
     </style>
 </head>
 <body>
-    <h1>JSON Formatter</h1>
+    <h1>Simple JSON Formatter</h1>
     <div id="input-container">
         <label for="json-input">Enter JSON Text:</label>
         <textarea id="json-input" placeholder="Paste your JSON here..."></textarea>
     </div>
+    <button class="format-button" id="format-button">Format</button>
     <div class="formatted-json-container">
         <div class="formatted-json-box">
             <pre class="formatted-json"><!-- Formatted JSON will appear here --></pre>
             <button class="copy-button" id="copy-button">Copy</button>
         </div>
     </div>
+    <div class="message" id="message">JSON Copied!</div>
 
     <script>
         const jsonInput = document.getElementById('json-input');
         const formattedJson = document.querySelector('.formatted-json');
         const copyButton = document.getElementById('copy-button');
+        const formatButton = document.getElementById('format-button');
+        const messageBox = document.getElementById('message');
 
-        jsonInput.addEventListener('input', formatJson);
-
+        formatButton.addEventListener('click', formatJson);
         copyButton.addEventListener('click', copyFormattedJson);
 
         function formatJson() {
@@ -105,6 +131,13 @@
             window.getSelection().addRange(range);
             document.execCommand('copy');
             window.getSelection().removeAllRanges();
+
+            // 显示消息提示
+            messageBox.style.display = 'block';
+            setTimeout(() => {
+                // 隐藏消息提示
+                messageBox.style.display = 'none';
+            }, 2000); // 2秒后隐藏
         }
     </script>
 </body>
