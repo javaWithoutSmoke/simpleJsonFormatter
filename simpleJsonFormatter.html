@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JSON Formatter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+
+        #input-container {
+            margin-bottom: 10px;
+        }
+
+        #json-input {
+            width: 100%;
+            height: 200px;
+            border: 1px solid #ccc;
+            padding: 10px;
+        }
+
+        .formatted-json-container {
+            position: relative;
+        }
+
+        .formatted-json-box {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            background-color: #f4f4f4;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .formatted-json pre {
+            white-space: pre-wrap;
+            font-size: 14px;
+            line-height: 1.6;
+            overflow-x: auto;
+        }
+
+        /* 格式化冒号与左右的文本距离相同 */
+        .formatted-json pre .string {
+            margin-right: 10px; /* 调整右边距 */
+        }
+
+        /* 添加一个简单的标题样式 */
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+        /* 复制按钮的样式 */
+        .copy-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>JSON Formatter</h1>
+    <div id="input-container">
+        <label for="json-input">Enter JSON Text:</label>
+        <textarea id="json-input" placeholder="Paste your JSON here..."></textarea>
+    </div>
+    <div class="formatted-json-container">
+        <div class="formatted-json-box">
+            <pre class="formatted-json"><!-- Formatted JSON will appear here --></pre>
+            <button class="copy-button" id="copy-button">Copy</button>
+        </div>
+    </div>
+
+    <script>
+        const jsonInput = document.getElementById('json-input');
+        const formattedJson = document.querySelector('.formatted-json');
+        const copyButton = document.getElementById('copy-button');
+
+        jsonInput.addEventListener('input', formatJson);
+
+        copyButton.addEventListener('click', copyFormattedJson);
+
+        function formatJson() {
+            try {
+                const inputText = jsonInput.value;
+                const jsonObject = JSON.parse(inputText);
+                const formattedText = JSON.stringify(jsonObject, null, 4);
+                formattedJson.textContent = formattedText;
+            } catch (error) {
+                formattedJson.textContent = 'Invalid JSON';
+            }
+        }
+
+        function copyFormattedJson() {
+            const range = document.createRange();
+            range.selectNode(formattedJson);
+            window.getSelection().removeAllRanges();
+            window.getSelection().addRange(range);
+            document.execCommand('copy');
+            window.getSelection().removeAllRanges();
+        }
+    </script>
+</body>
+</html>
